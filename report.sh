@@ -10,7 +10,8 @@
 # ------------- DEFINE VARIABLES -------------
 CWD=$PWD;
 
-API_ENDPOINT="YOUR_HTTP_ENDPOINT"
+TELEGRAM_API_TOKEN="YOUR_TELEGRAM_API_TOKEN"
+TELEGRAM_CHAT_ID="YOUR_TELEGRAM_BOT_CHAT_ID"
 
 CHIA_INSTALL_DIR="/home/user/chia-blockchain"
 TEMP_DIR="/chia/logs";
@@ -83,8 +84,11 @@ else
   printf '"%s" is different from "%s"\nSEND IT!
 ' "$CURR_REPORT" "$PREV_REPORT"
 
-  # POST data to Slack
-  curl -X POST --data-urlencode "payload={\"text\": \"$TEXT\"}" "$API_ENDPOINT"
+  # POST data to Telegram
+    curl -X POST \
+    -H 'Content-Type: application/json' \
+    -d "{\"chat_id\": \"$TELEGRAM_CHAT_ID\", \"text\": \"$TEXT\"}" \
+    https://api.telegram.org/bot$TELEGRAM_API_TOKEN/sendMessage
 
 fi
 
